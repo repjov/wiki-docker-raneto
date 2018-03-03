@@ -1,10 +1,15 @@
 dir = $(shell pwd)
-container = raneto
+container = wikilds
 
 ISCONTAINER = $(shell docker ps -a | grep -c $(container))
+ISIMAGE = $(shell docker image ls -a | grep -c $(container))
 
 ifeq ($(ISCONTAINER), 0)
-	running = $(MAKE) build
+	ifeq ($(ISIMAGE), 0)
+		running = $(MAKE) build && $(MAKE) run
+	else
+		running = $(MAKE) run-container
+	endif
 else
 	running = $(MAKE) start
 endif
@@ -13,7 +18,13 @@ run:
 	$(running)
 
 build:
-	docker run --name $(container)  -v $(dir)/content/:/data/content/ -v $(dir)/config/config.default.js:/opt/raneto/example/config.default.js -p 3000:3000 -d appsecco/raneto
+	docker build -t $(container) . --rm 
+
+run-container:
+	docker run --name $(container)  \
+		-v $(dir)/content/:/data/content/ \
+		-v $(dir)/config/config.default.js:/opt/raneto/example/config.default.js \
+		-p 3000:3000 -d $(container)
 
 start:
 	docker start $(container)
@@ -26,7 +37,7 @@ remove:
 	docker rm $(container)
 
 restartapp:
-	docker exec $(container) pm2 restart raneto
+	docker exec $(container) pm2 restart $(container)
 
 ssh:
 	docker exec -it $(container) /bin/bash
