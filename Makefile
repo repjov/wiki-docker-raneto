@@ -3,7 +3,7 @@ container = wikilds
 
 ISCONTAINER = $(shell docker ps -a | grep -c $(container))
 ISIMAGE = $(shell docker image ls -a | grep -c $(container))
-ISRUNNING = $(shell docker ps -a | grep -c -G Up.*wikilds$(container))
+ISRUNNING = $(shell docker ps -a | grep -c -G Up.*$(container))
 
 ifeq ($(ISCONTAINER), 0)
 	ifeq ($(ISIMAGE), 0)
