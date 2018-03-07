@@ -3,6 +3,7 @@ container = wikilds
 
 ISCONTAINER = $(shell docker ps -a | grep -c $(container))
 ISIMAGE = $(shell docker image ls -a | grep -c $(container))
+ISRUNNING = $(shell docker ps -a | grep -c Up)
 
 ifeq ($(ISCONTAINER), 0)
 	ifeq ($(ISIMAGE), 0)
@@ -11,7 +12,11 @@ ifeq ($(ISCONTAINER), 0)
 		running = $(MAKE) run-container
 	endif
 else
-	running = $(MAKE) start
+	ifeq ($(ISRUNNING), 0)
+		running = $(MAKE) start
+	else
+		running = $(MAKE) restart
+	endif
 endif
 
 run:
