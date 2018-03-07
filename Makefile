@@ -32,7 +32,7 @@ start:
 stop:
 	docker stop $(container)
 
-remove:
+clear:
 	$(MAKE) stop
 	docker rm $(container)
 
