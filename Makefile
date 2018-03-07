@@ -2,7 +2,7 @@ dir = $(shell pwd)
 container = wikilds
 
 ISCONTAINER = $(shell docker ps -a | grep -c $(container))
-ISIMAGE = $(shell docker image ls -a | grep -c $(container))
+ISIMAGE = $(shell docker image ls -a | grep -c grep -c -G Up.*$(container))
 ISRUNNING = $(shell docker ps -a | grep -c Up)
 
 ifeq ($(ISCONTAINER), 0)
