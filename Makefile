@@ -34,6 +34,9 @@ run-container:
 start:
 	docker start $(container)
 
+restart:
+	docker restart $(container)
+
 stop:
 	docker stop $(container)
 
