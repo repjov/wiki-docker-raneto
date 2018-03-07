@@ -2,8 +2,8 @@ dir = $(shell pwd)
 container = wikilds
 
 ISCONTAINER = $(shell docker ps -a | grep -c $(container))
-ISIMAGE = $(shell docker image ls -a | grep -c grep -c -G Up.*$(container))
-ISRUNNING = $(shell docker ps -a | grep -c Up)
+ISIMAGE = $(shell docker image ls -a | grep -c $(container))
+ISRUNNING = $(shell docker ps -a | grep -c -G Up.*wikilds$(container))
 
 ifeq ($(ISCONTAINER), 0)
 	ifeq ($(ISIMAGE), 0)
@@ -33,9 +33,6 @@ run-container:
 
 start:
 	docker start $(container)
-
-restart:
-	docker restart $(container)
 
 stop:
 	docker stop $(container)
