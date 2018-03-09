@@ -5,6 +5,20 @@ CONTENT_PATH="$BASEDIR/content/"
 CONFIG_PATH="$BASEDIR/config/config.default.js/"
 COMMAND=$1
 
+for i in "$@"
+do
+case $i in
+    --content=*)
+    CONTENT_PATH="${i#*=}"
+    shift # past argument=value
+    ;;
+    --config=*)
+    CONFIG_PATH="${i#*=}"
+    shift # past argument=value
+    ;;
+esac
+done
+
 ISCONTAINER=`docker ps -a | grep -c $CONTAINER`
 ISIMAGE=`docker image ls -a | grep -c $CONTAINER`
 ISRUNNING=`docker ps -a | grep -c -G Up.*$CONTAINER`
@@ -44,7 +58,7 @@ remove_contatiner () {
 }
 
 case $COMMAND in
-app_restart*)
+app_restart)
     if [ $ISRUNNING -eq 1 ]
     then
        docker exec $CONTAINER pm2 restart $CONTAINER
@@ -52,20 +66,20 @@ app_restart*)
         echo "No executed containers"
     fi
     ;;
-stop*)
+stop)
     if [ $ISCONTAINER -eq 1 ]
     then
         stop_contatiner
     fi
     ;;
-clear*)
+clear)
     if [ $ISCONTAINER -eq 1 ]
     then
         stop_contatiner
         remove_contatiner
     fi
     ;;
-run*)
+run)
     # Если не существует image, то нужно сбилдить
     if [ $ISIMAGE -eq 0 ]
     then

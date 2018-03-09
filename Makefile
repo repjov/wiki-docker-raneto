@@ -3,51 +3,15 @@ container = wikilds
 config_path = $(dir)/config/config.default.js
 conent_path = $(dir)/content/
 
-ISCONTAINER = $(shell docker ps -a | grep -c $(container))
-ISIMAGE = $(shell docker image ls -a | grep -c $(container))
-ISRUNNING = $(shell docker ps -a | grep -c -G Up.*$(container))
-
-ifeq ($(ISCONTAINER), 0)
-	ifeq ($(ISIMAGE), 0)
-		running = $(MAKE) build && $(MAKE) run
-	else
-		running = $(MAKE) run-container
-	endif
-else
-	ifeq ($(ISRUNNING), 0)
-		running = $(MAKE) start
-	else
-		running = $(MAKE) restart
-	endif
-endif
 
 run:
-	$(running)
-
-build:
-	docker build -t $(container) . --rm 
-
-run-container:
-	docker run --name $(container)  \
-		-v $(conent_path):/data/content/ \
-		-v $(config_path):/opt/raneto/example/config.default.js \
-		-p 3000:3000 -d $(container)
-
-start:
-	docker start $(container)
-
-restart:
-	docker restart $(container)
-
-stop:
-	docker stop $(container)
+	./script.sh run --content=$(conent_path) --config=$(config_path)
 
 clear:
-	$(MAKE) stop
-	docker rm $(container)
+	./script.sh clear
 
 restartapp:
-	docker exec $(container) pm2 restart $(container)
+	./script.sh app_restart
 
 ssh:
 	docker exec -it $(container) /bin/bash
