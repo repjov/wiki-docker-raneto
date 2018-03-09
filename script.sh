@@ -4,6 +4,7 @@ BASEDIR=$(pwd)
 CONTENT_PATH="$BASEDIR/content/"
 CONFIG_PATH="$BASEDIR/config/config.default.js/"
 COMMAND=$1
+PORT=3000
 
 for i in "$@"
 do
@@ -14,6 +15,10 @@ case $i in
     ;;
     --config=*)
     CONFIG_PATH="${i#*=}"
+    shift # past argument=value
+    ;;
+    --port=*)
+    PORT="${i#*=}"
     shift # past argument=value
     ;;
 esac
@@ -44,7 +49,7 @@ run_container () {
     docker run --name $CONTAINER  \
 		-v $CONTENT_PATH:/data/content/ \
 		-v $CONFIG_PATH:/opt/raneto/example/config.default.js \
-		-p 3200:3000 -d $CONTAINER
+		-p $PORT:$PORT -d $CONTAINER
 }
 
 stop_contatiner () {
