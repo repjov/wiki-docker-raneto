@@ -1,5 +1,7 @@
 dir = $(shell pwd)
 container = wikilds
+config_path = $(dir)/config/config.default.js
+conent_path = $(dir)/content/
 
 ISCONTAINER = $(shell docker ps -a | grep -c $(container))
 ISIMAGE = $(shell docker image ls -a | grep -c $(container))
@@ -27,8 +29,8 @@ build:
 
 run-container:
 	docker run --name $(container)  \
-		-v $(dir)/content/:/data/content/ \
-		-v $(dir)/config/config.default.js:/opt/raneto/example/config.default.js \
+		-v $(conent_path):/data/content/ \
+		-v $(config_path):/opt/raneto/example/config.default.js \
 		-p 3000:3000 -d $(container)
 
 start:
