@@ -3,7 +3,7 @@
 # Reference (https://github.com/sparkfabrik/docker-node-raneto)
 # Using official node:slim from the dockerhub (https://hub.docker.com/_/node/)
 FROM node:slim
-MAINTAINER Madhu Akula <madhu@appsecco.com>
+LABEL maintainer="Madhu Akula <madhu@appsecco.com>"
 
 # Change the raneto version based on version you want to use
 ENV RANETO_VERSION master
@@ -11,7 +11,6 @@ ENV RANETO_INSTALL_DIR /opt/raneto
 
 # Get Raneto from sources
 RUN cd /tmp \
-
     && curl -SLO "https://github.com/repjov/Raneto/archive/$RANETO_VERSION.tar.gz" \
     && mkdir -p $RANETO_INSTALL_DIR \
     && tar -xzf "$RANETO_VERSION.tar.gz" -C $RANETO_INSTALL_DIR --strip-components=1 \
