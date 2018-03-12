@@ -31,7 +31,7 @@ ISRUNNING=`docker ps -a | grep -c -G Up.*$CONTAINER`
 
 build_container () {
     echo "BUILD"
-    # docker build -t $CONTAINER . --rm 
+    docker build -t $CONTAINER . --rm 
 }
 
 start_contatiner () {
