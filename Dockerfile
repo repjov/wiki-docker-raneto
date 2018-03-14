@@ -29,6 +29,9 @@ COPY config/config.default.js $RANETO_INSTALL_DIR/example/config.default.js
 # Entering into the Raneto directory
 WORKDIR $RANETO_INSTALL_DIR
 
+RUN rm ./package-lock.json && \
+    npm cache clear --force
+
 # Installing Raneto
 RUN npm install \
     # && rm -f $RANETO_INSTALL_DIR/example/config.default.js \
